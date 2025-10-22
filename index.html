@@ -787,7 +787,7 @@
             </div>
             <div class="uv1">
                 <div class="wx1" id="wx1">
-                    <div class="yz1 bot">👋 Hello! I'm Retina 001, your AI assistant. You can type or speak to me. Try saying "Hello" or click the microphone button!</div>
+                    <div class="yz1 bot">🤖 Good day. I am JARVIS - Just A Rather Very Intelligent System. I specialize in cybersecurity, ethical hacking, and advanced programming assistance. How may I help you today, sir?</div>
                 </div>
                 <div class="ab2">
                     <input type="text" class="cd2" id="cd2" placeholder="Type your message or use voice...">
@@ -1072,7 +1072,7 @@
             }
         }
         function startVoiceDemo() {
-            speak("Welcome to Retina 001! I'm your voice-enabled AI assistant. You can talk to me by clicking the microphone button or by simply speaking. Let's try it!");
+            speak("JARVIS! I'm your voice-enabled AI assistant. You can talk to me by clicking the microphone button or by simply speaking. Let's try it!");
             setTimeout(() => {
                 scrollToSection('yz');
                 setTimeout(() => {
@@ -1096,21 +1096,29 @@
                 speak(message);
             }, 1500);
         }
-        function sendMessage() {
-            const message = cd2.value.trim();
-            if (message) {
-                addMessage(message, true);
-                cd2.value = '';
-                setTimeout(() => {
-                    let response = generateResponse(message);
-                    addBotMessage(response);
-                }, 500);
-            }
+async function sendMessage() {
+    const message = cd2.value.trim();
+    if (message) {
+        addMessage(message, true);
+        cd2.value = '';
+        setAssistantState('thinking');
+        try {
+            const res = await fetch("http://127.0.0.1:5000/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message })
+            });
+            const data = await res.json();
+            addBotMessage(data.reply);
+        } catch (err) {
+            addBotMessage("⚠️ Unable to connect to AI server. Please make sure the Flask server is running.");
         }
+    }
+}
         function generateResponse(message) {
             const lowerMessage = message.toLowerCase();
             if (lowerMessage.includes('hello') || lowerMessage.includes('hi')) {
-                return "Hello there! I'm Retina 001, your voice-enabled assistant. How can I help you today?";
+                return "Hello there! I'm JARVIS, your voice-enabled assistant. How can I help you today?";
             } else if (lowerMessage.includes('how are you')) {
                 return "I'm functioning perfectly! Thanks for asking. I'm ready to assist you with anything you need.";
             } else if (lowerMessage.includes('what can you do')) {
