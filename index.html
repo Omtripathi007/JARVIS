@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retina 001 - Voice-Enabled AI Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: #fff;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        .ab {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+        .cd {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            filter: brightness(1) blur(1px);
+        }
+        .ef {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%);
+            z-index: -1;
+        }
+        .gh {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .ij {
+            text-align: center;
+            z-index: 1;
+            padding: 2rem;
+            max-width: 900px;
+            animation: fadeInUp 1.5s ease;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .kl {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 200;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .mn {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 300;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            font-style: italic;
+        }
+        .op {
+            font-size: 1rem;
+            opacity: 0.7;
+            margin-bottom: 3rem;
+        }
+        .qr {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .qr:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        .qr i {
+            font-size: 1.5rem;
+            color: #667eea;
+        }
+        .st {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+        .uv {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+        }
+        .wx {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            margin: 20px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .wx:hover {
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(1.2);
+        }
+        .wx.active {
+            background: #667eea;
+        }
+        .wx::after {
+            content: attr(data-title);
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .wx:hover::after {
+            opacity: 1;
+        }
+        .yz {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        .yz.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .ab1 {
+            max-width: 1200px;
+            width: 100%;
+        }
+        .cd1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 200;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .ef1 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .gh1 {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s ease;
+        }
+        .gh1.listening {
+            animation: listening 2s infinite;
+            border-color: rgba(52, 211, 153, 0.5);
+            box-shadow: 0 0 20px rgba(52, 211, 153, 0.3);
+        }
+        .gh1.thinking {
+            animation: thinking 3s infinite;
+            border-color: rgba(251, 191, 36, 0.5);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+        }
+        .gh1.speaking {
+            animation: speaking 1.5s infinite;
+            border-color: rgba(139, 92, 246, 0.5);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+        @keyframes listening {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        @keyframes thinking {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.02) rotate(1deg); }
+            50% { transform: scale(1) rotate(0deg); }
+            75% { transform: scale(1.02) rotate(-1deg); }
+        }
+        @keyframes speaking {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.03); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.03); }
+        }
+        .ij1 {
+            position: absolute;
+            top: 35%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 40px;
+        }
+        .kl1 {
+            width: 30px;
+            height: 30px;
+            background: #fff;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+        }
+        .mn1 {
+            width: 15px;
+            height: 15px;
+            background: #333;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s ease;
+        }
+        .op1 {
+            position: absolute;
+            bottom: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 20px;
+            border-radius: 0 0 30px 30px;
+            background: #fff;
+            overflow: hidden;
+        }
+        .qr1 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #333;
+            border-radius: 0 0 30px 30px;
+            transform-origin: top;
+            transition: all 0.3s ease;
+        }
+        .gh1.speaking .qr1 {
+            animation: talk 0.5s infinite;
+        }
+        @keyframes talk {
+            0%, 100% { height: 100%; }
+            50% { height: 30%; }
+        }
+        .st1 {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            text-align: center;
+            min-height: 20px;
+        }
+        .uv1 {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+        .wx1 {
+            height: 400px;
+            overflow-y: auto;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        .yz1 {
+            margin: 1rem 0;
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            max-width: 70%;
+            animation: messageSlide 0.3s ease;
+        }
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        .yz1.bot {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            border-left: 3px solid #667eea;
+        }
+        .yz1.user {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 3px solid #fff;
+            margin-left: auto;
+            text-align: right;
+        }
+        .ab2 {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .cd2 {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .cd2:focus {
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .cd2::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .ef2 {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        .ef2:hover {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+        .ef2.recording {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #ef4444;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+        .gh2 {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            border: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .gh2:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        .ij2 {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 0.8rem 1.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 1000;
+        }
+        .ij2.active {
+            display: flex;
+        }
+        .ij2 i {
+            color: #ef4444;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .kl2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .mn2 {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .mn2:hover {
+            transform: translateY(-5px);
+            background: rgba(0, 0, 0, 0.7);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+        .op2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .qr2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+        .st2 {
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+        .uv2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .wx2 {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .wx2:hover {
+            transform: translateY(-5px);
+            background: rgba(0, 0, 0, 0.7);
+        }
+        .yz2 {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        .ab3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+        }
+        .cd3 {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        .ef3 {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+        .gh3 {
+            text-align: left;
+        }
+        .gh3 h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .gh3 p {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        .ij3 {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .kl3 {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .kl3:hover {
+            transform: translateY(-5px);
+            background: rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+        .mn3 {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .op3 {
+            margin-bottom: 1.5rem;
+        }
+        .op3 label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            font-weight: 500;
+        }
+        .op3 input,
+        .op3 textarea {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        .op3 input:focus,
+        .op3 textarea:focus {
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .op3 input::placeholder,
+        .op3 textarea::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+        .op3 textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        .qr3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .st3 {
+            width: 100%;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            border: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .st3:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        .st3:active {
+            transform: translateY(0);
+        }
+        .st3.success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        .st3.error {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+        .uv3 {
+            margin-top: 1rem;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .uv3.success {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #10b981;
+            display: block;
+        }
+        .uv3.error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+            display: block;
+        }
+        .wx3 {
+            border-color: #ef4444 !important;
+        }
+        .yz3 {
+            color: #ef4444;
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+        .yz3.show {
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .uv {
+                display: none;
+            }
+            .kl {
+                font-size: 2.5rem;
+            }
+            .kl2,
+            .uv2 {
+                grid-template-columns: 1fr;
+            }
+            .ij2 {
+                top: 10px;
+                right: 10px;
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            .gh1 {
+                width: 150px;
+                height: 150px;
+            }
+            .ef3 {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .qr3 {
+                grid-template-columns: 1fr;
+            }
+            .gh3 {
+                text-align: center;
+            }
+            .ij3 {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ab">
+        <video class="cd" autoplay muted loop>
+            <source src="huu.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="ef"></div>
+    <div class="ij2" id="ij2">
+        <i class="fas fa-microphone"></i>
+        <span>Listening...</span>
+    </div>
+    <section class="gh" id="gh">
+        <div class="ij">
+            <h1 class="kl">Retina 001</h1>
+            <p class="mn">"The future of human-AI interaction begins with a single conversation. We're not just building technology; we're creating connections that transcend boundaries."</p>
+            <p class="op">— Vision Statement 2024</p>
+            <div class="qr" onclick="startVoiceDemo()">
+                <i class="fas fa-microphone"></i>
+                <span>Try Voice Command</span>
+            </div>
+        </div>
+        <div class="st">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+    <div class="uv">
+        <div class="wx active" data-title="Home" onclick="scrollToSection('gh')"></div>
+        <div class="wx" data-title="Chat" onclick="scrollToSection('yz')"></div>
+        <div class="wx" data-title="Features" onclick="scrollToSection('kl2')"></div>
+        <div class="wx" data-title="Team" onclick="scrollToSection('uv2')"></div>
+        <div class="wx" data-title="Contact" onclick="scrollToSection('ef3')"></div>
+    </div>
+    <section class="yz" id="yz">
+        <div class="ab1">
+            <h2 class="cd1">Voice & Text Chat</h2>
+            <div class="ef1">
+                <div class="gh1" id="gh1">
+                    <div class="ij1">
+                        <div class="kl1">
+                            <div class="mn1" id="mn1"></div>
+                        </div>
+                        <div class="kl1">
+                            <div class="mn1" id="op1"></div>
+                        </div>
+                    </div>
+                    <div class="op1">
+                        <div class="qr1"></div>
+                    </div>
+                </div>
+                <div class="st1" id="st1">Ready to assist</div>
+            </div>
+            <div class="uv1">
+                <div class="wx1" id="wx1">
+                    <div class="yz1 bot">👋 Hello! I'm Retina 001, your AI assistant. You can type or speak to me. Try saying "Hello" or click the microphone button!</div>
+                </div>
+                <div class="ab2">
+                    <input type="text" class="cd2" id="cd2" placeholder="Type your message or use voice...">
+                    <button class="ef2" id="ef2" onclick="toggleVoiceRecognition()">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <button class="gh2" onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="yz" id="kl2">
+        <div class="ab1">
+            <h2 class="cd1">Voice-Enabled Features</h2>
+            <div class="kl2">
+                <div class="mn2">
+                    <div class="op2">
+                        <i class="fas fa-microphone-alt"></i>
+                    </div>
+                    <h3 class="qr2">Voice Recognition</h3>
+                    <p class="st2">Advanced speech recognition that understands natural language and multiple accents with high accuracy.</p>
+                </div>
+                <div class="mn2">
+                    <div class="op2">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                    <h3 class="qr2">Text-to-Speech</h3>
+                    <p class="st2">Natural-sounding voice responses with customizable tones and speaking styles for better engagement.</p>
+                </div>
+                <div class="mn2">
+                    <div class="op2">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3 class="qr2">Multi-Language</h3>
+                    <p class="st2">Support for 50+ languages with real-time translation and localized responses.</p>
+                </div>
+                <div class="mn2">
+                    <div class="op2">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="qr2">Smart Context</h3>
+                    <p class="st2">Remembers conversation context and provides intelligent, contextual responses.</p>
+                </div>
+                <div class="mn2">
+                    <div class="op2">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="qr2">Instant Response</h3>
+                    <p class="st2">Lightning-fast voice processing with minimal latency for natural conversations.</p>
+                </div>
+                <div class="mn2">
+                    <div class="op2">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="qr2">Secure & Private</h3>
+                    <p class="st2">End-to-end encryption for voice data with on-device processing options.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="yz" id="uv2">
+        <div class="ab1">
+            <h2 class="cd1">Meet Our Team</h2>
+            <div class="uv2">
+                <div class="wx2">
+                    <div class="yz2">VS</div>
+                    <h3 class="ab3">Vitthal Singh</h3>
+                    <p class="cd3">Backend Architect</p>
+                </div>
+                <div class="wx2">
+                    <div class="yz2">OT</div>
+                    <h3 class="ab3">Om Tripathi</h3>
+                    <p class="cd3">Frontend Specialist</p>
+                </div>
+                <div class="wx2">
+                    <div class="yz2">AM</div>
+                    <h3 class="ab3">Ayush Mishra</h3>
+                    <p class="cd3">Design Lead</p>
+                </div>
+                <div class="wx2">
+                    <div class="yz2">S</div>
+                    <h3 class="ab3">Sukoon</h3>
+                    <p class="cd3">AI Researcher</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="yz" id="ef3">
+        <div class="ab1">
+            <h2 class="cd1">Let's Connect</h2>
+            <div class="ef3">
+                <div class="gh3">
+                    <h3>Get in Touch</h3>
+                    <p>We'd love to hear from you! Whether you have a question, feedback, or just want to say hello, feel free to reach out.</p>
+                    <div style="margin-bottom: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <i class="fas fa-envelope" style="color: #667eea; font-size: 1.2rem;"></i>
+                            <span>vitthal@mail.in</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <i class="fas fa-phone" style="color: #667eea; font-size: 1.2rem;"></i>
+                            <span>1234567890</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <i class="fas fa-map-marker-alt" style="color: #667eea; font-size: 1.2rem;"></i>
+                            <span>noida</span>
+                        </div>
+                    </div>
+                    <div class="ij3">
+                        <a href="#" class="kl3">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="kl3">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="kl3">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="kl3">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="mn3">
+                    <form id="mn3" onsubmit="handleSubmit(event)">
+                        <div class="qr3">
+                            <div class="op3">
+                                <label for="qr4">First Name *</label>
+                                <input type="text" id="qr4" name="firstName" required>
+                                <span class="yz3">Please enter your first name</span>
+                            </div>
+                            <div class="op3">
+                                <label for="st4">Last Name *</label>
+                                <input type="text" id="st4" name="lastName" required>
+                                <span class="yz3">Please enter your last name</span>
+                            </div>
+                        </div>
+                        <div class="op3">
+                            <label for="uv4">Email Address *</label>
+                            <input type="email" id="uv4" name="email" required>
+                            <span class="yz3">Please enter a valid email address</span>
+                        </div>
+                        <div class="op3">
+                            <label for="wx4">Subject *</label>
+                            <input type="text" id="wx4" name="subject" required>
+                            <span class="yz3">Please enter a subject</span>
+                        </div>
+                        <div class="op3">
+                            <label for="yz4">Message *</label>
+                            <textarea id="yz4" name="message" required></textarea>
+                            <span class="yz3">Please enter your message</span>
+                        </div>
+                        <button type="submit" class="st3" id="st3">
+                            <span id="ab5">Send Message</span>
+                            <i class="fas fa-paper-plane" style="margin-left: 0.5rem;"></i>
+                        </button>
+                        <div class="uv3" id="uv3"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        const gh1 = document.getElementById('gh1');
+        const st1 = document.getElementById('st1');
+        const mn1 = document.getElementById('mn1');
+        const op1 = document.getElementById('op1');
+        function setAssistantState(state) {
+            gh1.classList.remove('listening', 'thinking', 'speaking');
+            gh1.classList.add(state);
+            switch(state) {
+                case 'listening':
+                    st1.textContent = 'Listening...';
+                    break;
+                case 'thinking':
+                    st1.textContent = 'Thinking...';
+                    break;
+                case 'speaking':
+                    st1.textContent = 'Speaking...';
+                    break;
+                default:
+                    st1.textContent = 'Ready to assist';
+            }
+        }
+        document.addEventListener('mousemove', (e) => {
+            const faceRect = gh1.getBoundingClientRect();
+            const faceCenterX = faceRect.left + faceRect.width / 2;
+            const faceCenterY = faceRect.top + faceRect.height / 2;
+            const angle = Math.atan2(e.clientY - faceCenterY, e.clientX - faceCenterX);
+            const distance = Math.min(5, Math.sqrt(Math.pow(e.clientX - faceCenterX, 2) + Math.pow(e.clientY - faceCenterY, 2)) / 20);
+            const pupilX = Math.cos(angle) * distance;
+            const pupilY = Math.sin(angle) * distance;
+            mn1.style.transform = `translate(calc(-50% + ${pupilX}px), calc(-50% + ${pupilY}px))`;
+            op1.style.transform = `translate(calc(-50% + ${pupilX}px), calc(-50% + ${pupilY}px))`;
+        });
+        setInterval(() => {
+            if (!gh1.classList.contains('speaking')) {
+                mn1.parentElement.style.height = '2px';
+                op1.parentElement.style.height = '2px';
+                setTimeout(() => {
+                    mn1.parentElement.style.height = '30px';
+                    op1.parentElement.style.height = '30px';
+                }, 150);
+            }
+        }, 4000);
+        let recognition;
+        let isListening = false;
+        let synth = window.speechSynthesis;
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById('cd2').value = transcript;
+                sendMessage();
+                stopVoiceRecognition();
+            };
+            recognition.onerror = function(event) {
+                console.error('Speech recognition error:', event.error);
+                stopVoiceRecognition();
+                addBotMessage("Sorry, I didn't catch that. Please try again.");
+            };
+            recognition.onend = function() {
+                stopVoiceRecognition();
+            };
+        }
+        function toggleVoiceRecognition() {
+            if (isListening) {
+                stopVoiceRecognition();
+            } else {
+                startVoiceRecognition();
+            }
+        }
+        function startVoiceRecognition() {
+            if (recognition) {
+                recognition.start();
+                isListening = true;
+                document.getElementById('ef2').classList.add('recording');
+                document.getElementById('ij2').classList.add('active');
+                setAssistantState('listening');
+            } else {
+                addBotMessage("Voice recognition is not supported in your browser. Please use Chrome or Edge.");
+            }
+        }
+        function stopVoiceRecognition() {
+            if (recognition && isListening) {
+                recognition.stop();
+                isListening = false;
+                document.getElementById('ef2').classList.remove('recording');
+                document.getElementById('ij2').classList.remove('active');
+                setAssistantState('ready');
+            }
+        }
+        function speak(text) {
+            if (synth) {
+                synth.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 1.0;
+                utterance.pitch = 1.0;
+                utterance.volume = 0.8;
+                utterance.onstart = function() {
+                    setAssistantState('speaking');
+                };
+                utterance.onend = function() {
+                    setAssistantState('ready');
+                };
+                const voices = synth.getVoices();
+                if (voices.length > 0) {
+                    const preferredVoice = voices.find(voice => 
+                        voice.name.includes('Google') || 
+                        voice.name.includes('Microsoft') ||
+                        voice.lang.includes('en')
+                    );
+                    if (preferredVoice) {
+                        utterance.voice = preferredVoice;
+                    }
+                }
+                synth.speak(utterance);
+            }
+        }
+        function startVoiceDemo() {
+            speak("Welcome to Retina 001! I'm your voice-enabled AI assistant. You can talk to me by clicking the microphone button or by simply speaking. Let's try it!");
+            setTimeout(() => {
+                scrollToSection('yz');
+                setTimeout(() => {
+                    startVoiceRecognition();
+                }, 1000);
+            }, 3000);
+        }
+        const wx1 = document.getElementById('wx1');
+        const cd2 = document.getElementById('cd2');
+        function addMessage(message, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'yz1 ' + (isUser ? 'user' : 'bot');
+            messageDiv.textContent = message;
+            wx1.appendChild(messageDiv);
+            wx1.scrollTop = wx1.scrollHeight;
+        }
+        function addBotMessage(message) {
+            setAssistantState('thinking');
+            setTimeout(() => {
+                addMessage(message, false);
+                speak(message);
+            }, 1500);
+        }
+        function sendMessage() {
+            const message = cd2.value.trim();
+            if (message) {
+                addMessage(message, true);
+                cd2.value = '';
+                setTimeout(() => {
+                    let response = generateResponse(message);
+                    addBotMessage(response);
+                }, 500);
+            }
+        }
+        function generateResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            if (lowerMessage.includes('hello') || lowerMessage.includes('hi')) {
+                return "Hello there! I'm Retina 001, your voice-enabled assistant. How can I help you today?";
+            } else if (lowerMessage.includes('how are you')) {
+                return "I'm functioning perfectly! Thanks for asking. I'm ready to assist you with anything you need.";
+            } else if (lowerMessage.includes('what can you do')) {
+                return "I can help you through voice and text! I can answer questions, have conversations, set reminders, and much more. Just speak or type your request.";
+            } else if (lowerMessage.includes('weather')) {
+                return "I can check the weather for you! However, I'd need your location. For now, I can tell you it's a great day to have a conversation!";
+            } else if (lowerMessage.includes('joke')) {
+                return "Why don't scientists trust atoms? Because they make up everything! 😄";
+            } else if (lowerMessage.includes('help')) {
+                return "I'm here to help! You can ask me questions, have conversations, or give me commands. Try saying 'tell me a joke' or 'what's the weather?'";
+            } else if (lowerMessage.includes('bye') || lowerMessage.includes('goodbye')) {
+                return "Goodbye! It was great talking with you. Feel free to come back anytime!";
+            } else if (lowerMessage.includes('thank')) {
+                return "You're very welcome! Is there anything else I can help you with?";
+            } else if (lowerMessage.includes('your name')) {
+                return "I'm Retina 001, your advanced AI assistant with voice capabilities. Nice to meet you!";
+            } else if (lowerMessage.includes('voice') || lowerMessage.includes('speak')) {
+                return "Yes, I can speak! I'm using text-to-speech technology to communicate with you. You can also speak to me using the microphone button.";
+            } else {
+                return "That's interesting! " + message + ". Tell me more about what you'd like to know or explore.";
+            }
+        }
+        cd2.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        function handleSubmit(event) {
+            event.preventDefault();
+            const form = document.getElementById('mn3');
+            const submitBtn = document.getElementById('st3');
+            const btnText = document.getElementById('ab5');
+            const formMessage = document.getElementById('uv3');
+            document.querySelectorAll('.wx3').forEach(input => {
+                input.classList.remove('wx3');
+            });
+            document.querySelectorAll('.yz3').forEach(error => {
+                error.classList.remove('show');
+            });
+            formMessage.className = 'uv3';
+            formMessage.textContent = '';
+            let isValid = true;
+            const formData = new FormData(form);
+            for (let [key, value] of formData.entries()) {
+                const input = document.getElementById(key.charAt(0) + '4');
+                if (!value.trim()) {
+                    input.classList.add('wx3');
+                    input.nextElementSibling.classList.add('show');
+                    isValid = false;
+                }
+            }
+            const emailInput = document.getElementById('uv4');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(emailInput.value)) {
+                emailInput.classList.add('wx3');
+                emailInput.nextElementSibling.classList.add('show');
+                isValid = false;
+            }
+            if (!isValid) {
+                formMessage.className = 'uv3 error';
+                formMessage.textContent = 'Please fill in all required fields correctly.';
+                return;
+            }
+            submitBtn.disabled = true;
+            btnText.textContent = 'Sending...';
+            submitBtn.classList.add('loading');
+            setTimeout(() => {
+                submitBtn.classList.remove('loading');
+                submitBtn.classList.add('success');
+                btnText.textContent = 'Message Sent!';
+                formMessage.className = 'uv3 success';
+                formMessage.textContent = 'Thank you for your message! We\'ll get back to you soon.';
+                form.reset();
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('success');
+                    btnText.textContent = 'Send Message';
+                    formMessage.className = 'uv3';
+                    formMessage.textContent = '';
+                }, 3000);
+                speak("Thank you for contacting us! We've received your message and will respond soon.");
+            }, 2000);
+        }
+        document.querySelectorAll('.op3 input, .op3 textarea').forEach(input => {
+            input.addEventListener('input', function() {
+                this.classList.remove('wx3');
+                this.nextElementSibling.classList.remove('show');
+            });
+        });
+        const sections = document.querySelectorAll('.yz');
+        const navDots = document.querySelectorAll('.wx');
+        const observerOptions = {
+            threshold: 0.3,
+            rootMargin: '0px 0px -100px 0px'
+        };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    const sectionId = entry.target.id;
+                    navDots.forEach(dot => {
+                        dot.classList.remove('active');
+                        if (dot.getAttribute('data-title').toLowerCase() === sectionId) {
+                            dot.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const heroContent = document.querySelector('.ij');
+            if (heroContent) {
+                heroContent.style.transform = `translateY(${scrolled * 0.5}px)`;
+                heroContent.style.opacity = 1 - scrolled / 600;
+            }
+        });
+        if (synth) {
+            if (speechSynthesis.onvoiceschanged !== undefined) {
+                speechSynthesis.onvoiceschanged = function() {
+                    synth.getVoices();
+                };
+            }
+        }
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                speak("Welcome to Retina 001! I'm your voice-enabled AI assistant. Click the microphone to start talking with me.");
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
